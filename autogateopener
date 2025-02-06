@@ -1,0 +1,25 @@
+#include <Servo.h>
+
+Servo door;  // Create Servo object
+int pirPin = 2;  // PIR sensor output pin
+int motionDetected;
+
+void setup() {
+    pinMode(pirPin, INPUT);
+    door.attach(9);  // Servo connected to pin 9
+    door.write(0);   // Initial door position (closed)
+    Serial.begin(9600);
+}
+
+void loop() {
+    motionDetected = digitalRead(pirPin);
+    
+    if (motionDetected == HIGH) {
+        Serial.println("Motion Detected! Opening Door...");
+        door.write(90);  // Open the door
+        delay(5000);      // Keep the door open for 5 seconds
+        Serial.println("Closing Door...");
+        door.write(0);    // Close the door
+    }
+    delay(500);  // Small delay to avoid multiple triggers
+}
